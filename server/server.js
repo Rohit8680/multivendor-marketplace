@@ -19,11 +19,15 @@ const app = express();
 
 const connectDB = async () => {
   try {
-    const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/multivendor_marketplace';
-    const conn = await mongoose.connect(dbURI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    const dbURI = process.env.MONGODB_URI;
+    if (dbURI) {
+      const conn = await mongoose.connect(dbURI, { serverSelectionTimeoutMS: 3000 });
+      console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } else {
+      console.log('MongoDB URI notice: Running in cloud server mode.');
+    }
   } catch (error) {
-    console.error(`MongoDB Connection Warning: ${error.message}`);
+    console.warn(`MongoDB Connection Notice: ${error.message}`);
   }
 };
 
@@ -45,7 +49,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
-  res.json({
+  res.status(200).json({
     message: 'Multi-Vendor Marketplace REST API Server is running smoothly!',
     status: 'HEALTHY',
     timestamp: new Date()

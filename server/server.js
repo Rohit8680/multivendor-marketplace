@@ -4,7 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 
-// Load environment variables
 dotenv.config();
 
 const authRoutes = require('./routes/authRoutes');
@@ -18,7 +17,6 @@ const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
-// Database Connection
 const connectDB = async () => {
   try {
     const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/multivendor_marketplace';
@@ -31,15 +29,12 @@ const connectDB = async () => {
 
 connectDB();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static upload images folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
@@ -49,7 +44,6 @@ app.use('/api/seller', sellerRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/reviews', reviewRoutes);
 
-// Health Check Endpoint
 app.get('/', (req, res) => {
   res.json({
     message: 'Multi-Vendor Marketplace REST API Server is running smoothly!',
@@ -58,7 +52,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Global Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled Error:', err.stack);
   res.status(err.status || 500).json({

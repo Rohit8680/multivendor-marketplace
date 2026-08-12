@@ -30,12 +30,16 @@ const ProductDetails = () => {
     try {
       setLoading(true);
       setError(null);
-      const [prodRes, revRes] = await Promise.all([
-        API.get(`/products/${id}`),
-        API.get(`/products/${id}/reviews`)
-      ]);
+      const prodRes = await API.get(`/products/${id}`);
       setProduct(prodRes.data);
-      setReviews(revRes.data || []);
+      
+      try {
+        const revRes = await API.get(`/products/${id}/reviews`);
+        setReviews(revRes.data || []);
+      } catch (revErr) {
+        setReviews([]);
+      }
+      
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -83,7 +87,7 @@ const ProductDetails = () => {
       setReviewSuccess('Review submitted successfully!');
       setComment('');
       setReviewLoading(false);
-      fetchProductData(); // Refresh product rating & reviews list
+      fetchProductData();
     } catch (err) {
       setReviewLoading(false);
       setReviewError(getErrorMessage(err));

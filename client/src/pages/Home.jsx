@@ -35,7 +35,7 @@ const Home = () => {
   return (
     <div className="animate-fade-in">
       {/* Hero Section */}
-      <section style={{
+      <section className="hero-section" style={{
         background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%)',
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--border-color)',
@@ -49,7 +49,7 @@ const Home = () => {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(99, 102, 241, 0.15)', border: '1px solid rgba(99, 102, 241, 0.3)', borderRadius: '9999px', padding: '0.35rem 0.9rem', fontSize: '0.8rem', color: '#818cf8', fontWeight: 600, marginBottom: '1.2rem' }}>
             <Sparkles size={14} /> Next-Gen Multi-Vendor Marketplace
           </div>
-          <h1 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1rem', lineHeight: '1.15', color: '#ffffff' }}>
+          <h1 className="hero-title" style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1rem', lineHeight: '1.15', color: '#ffffff' }}>
             Discover Products from Verified <span style={{ background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Independent Sellers</span>
           </h1>
           <p style={{ color: '#94a3b8', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.6' }}>
@@ -138,5 +138,4 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;

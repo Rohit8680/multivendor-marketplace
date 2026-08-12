@@ -10,6 +10,11 @@ const {
 const { protect } = require('../middleware/authMiddleware');
 const { authorizeApprovedSeller } = require('../middleware/roleMiddleware');
 
+const reviewRouter = require('./reviewRoutes');
+
+// Re-route into other resource routers for nested routes
+router.use('/:id/reviews', reviewRouter);
+
 router
   .route('/')
   .get(getProducts)

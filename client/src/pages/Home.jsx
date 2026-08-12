@@ -4,13 +4,15 @@ import API from '../services/api';
 import ProductCard from '../components/ProductCard';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
-import { ShoppingBag, ArrowRight, Store, ShieldCheck, Sparkles, Layers } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Store, ShieldCheck, Sparkles, Layers, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(2);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,10 +21,11 @@ const Home = () => {
         setLoading(true);
         const [catRes, prodRes] = await Promise.all([
           API.get('/categories'),
-          API.get('/products?limit=8')
+          API.get(`/products?page=${page}&limit=8`)
         ]);
         setCategories(catRes.data || []);
         setFeaturedProducts(prodRes.data.products || []);
+        setTotalPages(prodRes.data.pages || 2);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -30,7 +33,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [page]);
 
   return (
     <div className="animate-fade-in">
@@ -135,11 +138,95 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Pagination / View More Products Button */}
-            <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-              <Link to="/products?page=2" className="btn btn-secondary btn-lg" style={{ gap: '0.6rem', padding: '0.8rem 2rem' }}>
-                View All Products (Go to Page 2) <ArrowRight size={18} />
-              </Link>
+            {/* Exact Screenshot Pagination Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', marginTop: '3rem' }}>
+              {/* Prev Button */}
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.55rem 1.2rem',
+                  background: 'rgba(30, 41, 59, 0.7)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: '10px',
+                  color: page === 1 ? '#64748b' : '#ffffff',
+                  fontSize: '0.95rem',
+                  fontWeight: 600,
+                  cursor: page === 1 ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease',
+                  opacity: page === 1 ? 0.5 : 1
+                }}
+              >
+                <ChevronLeft size={16} /> Prev
+              </button>
+
+              {/* Page Number 1 */}
+              <button
+                onClick={() => setPage(1)}
+                style={{
+                  minWidth: '42px',
+                  height: '42px',
+                  padding: '0 0.8rem',
+                  background: page === 1 ? '#4f46e5' : 'rgba(30, 41, 59, 0.7)',
+                  border: page === 1 ? '1px solid #6366f1' : '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: '10px',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: page === 1 ? '0 0 20px rgba(99, 102, 241, 0.6)' : 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                1
+              </button>
+
+              {/* Page Number 2 */}
+              <button
+                onClick={() => setPage(2)}
+                style={{
+                  minWidth: '42px',
+                  height: '42px',
+                  padding: '0 0.8rem',
+                  background: page === 2 ? '#4f46e5' : 'rgba(30, 41, 59, 0.7)',
+                  border: page === 2 ? '1px solid #6366f1' : '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: '10px',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: page === 2 ? '0 0 20px rgba(99, 102, 241, 0.6)' : 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                2
+              </button>
+
+              {/* Next Button */}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.55rem 1.2rem',
+                  background: 'rgba(30, 41, 59, 0.7)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: '10px',
+                  color: page >= totalPages ? '#64748b' : '#ffffff',
+                  fontSize: '0.95rem',
+                  fontWeight: 600,
+                  cursor: page >= totalPages ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease',
+                  opacity: page >= totalPages ? 0.5 : 1
+                }}
+              >
+                Next <ChevronRight size={16} />
+              </button>
             </div>
           </>
         )}

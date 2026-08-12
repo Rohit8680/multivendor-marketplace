@@ -44,15 +44,14 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Product Image */}
-      <Link to={`/products/${product._id}`} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px', background: 'rgba(255, 255, 255, 0.03)', padding: '0.8rem' }}>
+      <Link to={`/products/${product._id}`} style={{ overflow: 'hidden', display: 'block', height: '200px', background: '#1e293b' }}>
         <img
           src={product.image}
           alt={product.name}
           style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
-            objectFit: 'contain',
-            borderRadius: '6px',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
             transition: 'transform 0.4s ease'
           }}
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}

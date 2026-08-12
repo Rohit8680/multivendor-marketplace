@@ -128,11 +128,20 @@ const Home = () => {
         ) : error ? (
           <ErrorMessage message={error} />
         ) : (
-          <div className="grid-cards">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid-cards">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+
+            {/* Pagination / View More Products Button */}
+            <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+              <Link to="/products?page=2" className="btn btn-secondary btn-lg" style={{ gap: '0.6rem', padding: '0.8rem 2rem' }}>
+                View All Products (Go to Page 2) <ArrowRight size={18} />
+              </Link>
+            </div>
+          </>
         )}
       </section>
     </div>
